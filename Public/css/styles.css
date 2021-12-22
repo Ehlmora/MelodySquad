@@ -1,0 +1,168 @@
+@charset "UTF-8";
+
+:root {
+
+    /* Primary color palette */
+    --ms-orange: #f97316;
+    --ms-yellow: #fdad0a;
+    --ms-dark: #111827;
+    --ms-grey: #e5e7eb;
+    --ms-light-grey: #f8fafc;
+    --ms-white: #ffffff;
+
+    /* Secondary color palette */
+    --ms-purple: #4c2ffa;
+    --ms-dark-purple: #1f07ad;
+    --ms-light-purple: #e0dbfb;
+    --ms-white-purple: #f9f8ff;
+
+    /* Font */
+    --ms-font: Montserrat;
+
+    /* Borders */
+    --ms-border: 1px solid var(--ms-grey)!important;
+    --ms-border-radius: 35px;
+
+    /*
+    * Bootstrap Override
+    */
+    /* HEX Color palette */
+    --bs-primary: var(--ms-orange);
+    --bs-secondary: var(--ms-purple);
+
+    /* RGB Color palette */
+    --bs-primary-rgb: 249, 115, 22;
+    --bs-secondary-rgb: 76, 47, 250;
+}
+
+body {
+    font-family: var(--ms-font);
+    font-size: 0.875em;
+    background-color: var(--ms-light-grey);
+}
+
+/*footer {
+    position: relative;
+    bottom: 0;
+}*/
+
+h1 {
+    font-size: 1.5em;
+}
+
+h2 {
+    font-size: 1.125em;
+}
+
+h3 {
+    font-size: 0.9375em;
+}
+
+.ms-rounded {
+    border-radius: 35px;
+}
+
+.footer-hr {
+    width: 3em;
+    height: 3px;
+    border: none;
+    opacity: 100%;
+    background-color: var(--ms-orange);
+}
+
+.ms-footer-link {
+    text-decoration: none;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.ms-footer-link:hover, .ms-footer-link:focus {
+    color: var(--ms-purple);
+}
+
+.ms-gradient {
+    background: rgb(249,115,22);
+    background: linear-gradient(120deg, var(--ms-orange) 0%, var(--ms-yellow) 100%);
+}
+
+.card-category {
+    color: var(--ms-purple);
+    text-transform: uppercase;
+}
+
+hr {
+    opacity: 100%;
+    background-color: var(--ms-grey);
+}
+
+/*
+ * Bootstrap Override
+ */
+.border {
+    border: var(--ms-border);
+}
+
+.border-orange {
+    border: 1px solid #FFCC40;
+}
+
+.border-bottom {
+    border-bottom: var(--ms-border);
+}
+
+.border-top {
+    border-top: var(--ms-border);
+}
+
+.btn-primary {
+    background-color: var(--ms-orange);
+    border-color: var(--ms-orange);
+}
+.btn-primary:hover {
+    background-color: var(--ms-yellow);
+    border-color: var(--ms-yellow);
+}
+.btn-check:focus + .btn-primary, .btn-primary:focus {
+    background-color: var(--ms-yellow);
+    border-color: var(--ms-yellow);
+}
+
+.btn-outline-primary {
+    color: var(--ms-orange);
+    border-color: var(--ms-orange);
+}
+.btn-outline-primary:hover {
+    background-color: var(--ms-orange);
+    border-color: var(--ms-orange);
+}
+
+.btn-check:checked + .btn-outline-primary, .btn-check:active + .btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show {
+    background-color: var(--ms-yellow);
+    border-color: var(--ms-yellow);
+}
+
+.card {
+    border-radius: var(--ms-border-radius);
+    box-shadow: rgb(0 0 0 / 7%) 0px 0.125rem 0.25rem;
+    transition: box-shadow .5s;
+}
+
+.card:hover {
+    box-shadow: rgb(0 0 0 / 15%) 0px 0.5rem 1rem;
+
+}
+
+.card > img {
+    border-radius: var(--ms-border-radius);
+}
+
+.nav-link:hover, .nav-link:focus {
+    color: var(--ms-purple);
+}
+
+.select {
+    border-radius: 35px;
+}
+
+.select:active {
+    border-radius: 35px 35px 0px 0px;
+}
