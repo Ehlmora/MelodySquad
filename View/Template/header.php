@@ -24,8 +24,12 @@
                     <img src="/Public/img/logo/logo_black.png" alt="MelodySquad Logo" width="250">
                 </a>
                 <ul class="nav col-12 col-md-auto me-lg-auto mb-2 justify-content-start mb-md-0 px-5">
-                    <li><a href="/formations" class="nav-link px-2 link-dark">Formations</a></li>
-                    <li><a href="/courses" class="nav-link px-2 link-dark">Cours</a></li>
+                    <li>
+                        <a href="formations" class="nav-link px-2 link-dark <?php echo ROUTE[0] == "formations" ? "active" : ""; ?>">Formations</a>
+                    </li>
+                    <li>
+                        <a href="courses" class="nav-link px-2 link-dark <?php echo ROUTE[0] == "courses" ? "active" : ""; ?>">Cours</a>
+                    </li>
                 </ul>
                 <?php if(isset($_SESSION['user'])) { ?>
                 <div class="dropdown">
@@ -41,7 +45,7 @@
                 </div>
                 <?php } else { ?>
                 <div>
-                    <a href="/connect" class="btn btn-primary">Se connecter</a>
+                    <a href="/login" class="btn btn-primary">Se connecter</a>
                     <a href="/signin" class="btn btn-outline-primary">S'inscrire</a>
                 </div>
                 <?php } ?>
