@@ -7,12 +7,12 @@ class CategoryModel {
 
     /**
      * @param int $id
-     * @param string $title
+     * @param string $name
      */
-    public function __construct(int $id, string $title)
+    public function __construct(int $id, string $name)
     {
         $this->id = $id;
-        $this->title = $title;
+        $this->name = $name;
     }
 
     /**
@@ -34,17 +34,17 @@ class CategoryModel {
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getName(): string
     {
-        return $this->title;
+        return $this->name;
     }
 
     /**
-     * @param string $title
+     * @param string $name
      */
-    public function setTitle(string $title): void
+    public function setName(string $name): void
     {
-        $this->title = $title;
+        $this->title = $name;
     }
 
 }

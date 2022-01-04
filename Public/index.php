@@ -6,6 +6,9 @@ session_start();
 require_once '../Config/config.php';
 require_once '../Config/database.php';
 
+// Load toolbox classes
+require_once '../Toolbox/Manipulator/StringManipulator.php';
+
 // Header
 include '../View/Template/header.php';
 

@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="/Public/css/styles.css">
 
         <!-- JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="/Public/js/bootstrap.bundle.min.js"></script>
 
         <!-- Favicon -->
@@ -25,13 +26,13 @@
                 </a>
                 <ul class="nav col-12 col-md-auto me-lg-auto mb-2 justify-content-start mb-md-0 px-5">
                     <li>
-                        <a href="formations" class="nav-link px-2 link-dark <?php echo ROUTE[0] == "formations" ? "active" : ""; ?>">Formations</a>
+                        <a href="/formations" class="nav-link px-2 link-dark <?php echo ROUTE[0] == "formations" ? "active" : ""; ?>">Formations</a>
                     </li>
                     <li>
-                        <a href="courses" class="nav-link px-2 link-dark <?php echo ROUTE[0] == "courses" ? "active" : ""; ?>">Cours</a>
+                        <a href="/courses" class="nav-link px-2 link-dark <?php echo ROUTE[0] == "courses" ? "active" : ""; ?>">Cours</a>
                     </li>
                 </ul>
-                <?php if(isset($_SESSION['user'])) { ?>
+                <?php if(isset($_SESSION['user_id'])) { ?>
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle d-block link-dark text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://github.com/mdo.png" alt="Profile picture" width="32" height="32" class="rounded-circle">

@@ -3,16 +3,16 @@
 class DifficultyModel {
 
 	private int $id;
-	private string $level;
+	private string $name;
 
     /**
      * @param int $id
-     * @param string $level
+     * @param string $name
      */
-    public function __construct(int $id, string $level)
+    public function __construct(int $id, string $name)
     {
         $this->id = $id;
-        $this->level = $level;
+        $this->name = $name;
     }
 
     /**
@@ -34,17 +34,17 @@ class DifficultyModel {
     /**
      * @return string
      */
-    public function getLevel(): string
+    public function getName(): string
     {
-        return $this->level;
+        return $this->name;
     }
 
     /**
-     * @param string $level
+     * @param string $name
      */
-    public function setLevel(string $level): void
+    public function setName(string $name): void
     {
-        $this->level = $level;
+        $this->name = $name;
     }
 
 }

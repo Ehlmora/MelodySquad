@@ -2,6 +2,8 @@
 
 require_once "DAO.php";
 
+require_once '../Model/CourseModel.php';
+
 class CourseDAO extends DAO
 {
     private CourseModel $course;
@@ -35,12 +37,45 @@ class CourseDAO extends DAO
 
             $query  = "SELECT title, description, pictureURL, category.name AS category, category.color AS color FROM course INNER JOIN category ON course.category_id = category.id";
             $sth    = $this->connection->prepare($query);
-            $result = $sth->execute([]);
+            $sth->execute([]);
 
             $this->connection = null;
 
             return $sth->fetchAll();
 
+
+        } catch (PDOException $e) {
+
+            print '<div class="alert alert-danger" role="alert">[Erreur]: ' . $e->getMessage() . '<div/>';
+            die();
+
+        }
+
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllByCategoryAndDifficulty($category, $difficulty) : array {
+
+        try {
+
+            $this->connect();
+
+            $query  = "
+                SELECT title, description, pictureURL, category.name AS category, category.color AS color 
+                FROM course INNER JOIN category ON course.category_id = category.id 
+                WHERE category_id LIKE :category AND difficulty_id LIKE :difficulty
+            ";
+            $sth    = $this->connection->prepare($query);
+            $result = $sth->execute([
+                ":category"     => $category,
+                ":difficulty"   => $difficulty
+            ]);
+
+            $this->connection = null;
+
+            return $sth->fetchAll();
 
         } catch (PDOException $e) {
 

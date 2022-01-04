@@ -16,8 +16,8 @@ class DAO
 
         } catch (PDOException $e) {
 
-            print '<div class="alert alert-danger" role="alert">[Erreur]: ' . $e->getMessage() . '<div/>';
-            die();
+            die('<div class="alert alert-danger" role="alert">[Erreur]: ' . $e->getMessage() . '<div/>');
+
         }
 
     }

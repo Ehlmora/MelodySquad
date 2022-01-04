@@ -11,6 +11,10 @@ class FormationController extends Controller
     {
         $dao = new FormationDAO();
         $formations = $dao->getAll();
+
+        $categoryDao = new CategoryDAO();
+        $categories = $categoryDao->getAll();
+
         include_once '../View/Formation/index.php';
     }
 

@@ -4,7 +4,7 @@
     <div class="row row-cols-2 row-cols-lg-3 g-4">
         <?php foreach($formations as $formation) { ?>
         <div class="col">
-            <a href="#" class="card text-decoration-none link-dark h-auto">
+            <a href="/formations/<?= StringManipulator::slugify($formation['title']); ?>" class="card text-decoration-none link-dark h-auto">
                 <img src="<?= $formation['pictureURL']; ?>" class="card-img-top">
                 <div class="card-body">
                     <h5 card="title"><?= $formation['title']; ?></h5>

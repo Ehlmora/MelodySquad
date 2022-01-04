@@ -5,8 +5,10 @@ class AccountModel {
     private int $id;
     private string $firstname;
     private string $lastname;
+    private string $username;
     private string $birthDate;
-    private string $email;
+    private string $mail;
+    private string $password;
     private string $createdAt;
     private string $lastConnection;
     private string $profilePictureURL;
@@ -16,20 +18,24 @@ class AccountModel {
      * @param int $id
      * @param string $firstname
      * @param string $lastname
+     * @param string $username
      * @param string $birthDate
-     * @param string $email
+     * @param string $mail
+     * @param string $password
      * @param string $createdAt
      * @param string $lastConnection
      * @param string $profilePictureURL
      * @param RoleModel $role
      */
-    public function __construct(int $id, string $firstname, string $lastname, string $birthDate, string $email, string $createdAt, string $lastConnection, string $profilePictureURL, RoleModel $role)
+    public function __construct(int $id, string $firstname, string $lastname, string $username, string $birthDate, string $mail, string $password, string $createdAt, string $lastConnection, string $profilePictureURL, RoleModel $role)
     {
         $this->id = $id;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
+        $this->username = $username;
         $this->birthDate = $birthDate;
-        $this->email = $email;
+        $this->mail = $mail;
+        $this->password = $password;
         $this->createdAt = $createdAt;
         $this->lastConnection = $lastConnection;
         $this->profilePictureURL = $profilePictureURL;
@@ -46,10 +52,12 @@ class AccountModel {
 
     /**
      * @param int $id
+     * @return AccountModel
      */
-    public function setId(int $id): void
+    public function setId(int $id): AccountModel
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -62,10 +70,12 @@ class AccountModel {
 
     /**
      * @param string $firstname
+     * @return AccountModel
      */
-    public function setFirstname(string $firstname): void
+    public function setFirstname(string $firstname): AccountModel
     {
         $this->firstname = $firstname;
+        return $this;
     }
 
     /**
@@ -78,10 +88,30 @@ class AccountModel {
 
     /**
      * @param string $lastname
+     * @return AccountModel
      */
-    public function setLastname(string $lastname): void
+    public function setLastname(string $lastname): AccountModel
     {
         $this->lastname = $lastname;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     * @return AccountModel
+     */
+    public function setUsername(string $username): AccountModel
+    {
+        $this->username = $username;
+        return $this;
     }
 
     /**
@@ -94,26 +124,48 @@ class AccountModel {
 
     /**
      * @param string $birthDate
+     * @return AccountModel
      */
-    public function setBirthDate(string $birthDate): void
+    public function setBirthDate(string $birthDate): AccountModel
     {
         $this->birthDate = $birthDate;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getMail(): string
     {
-        return $this->email;
+        return $this->mail;
     }
 
     /**
-     * @param string $email
+     * @param string $mail
+     * @return AccountModel
      */
-    public function setEmail(string $email): void
+    public function setMail(string $mail): AccountModel
     {
-        $this->email = $email;
+        $this->mail = $mail;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @return AccountModel
+     */
+    public function setPassword(string $password): AccountModel
+    {
+        $this->password = $password;
+        return $this;
     }
 
     /**
@@ -126,10 +178,12 @@ class AccountModel {
 
     /**
      * @param string $createdAt
+     * @return AccountModel
      */
-    public function setCreatedAt(string $createdAt): void
+    public function setCreatedAt(string $createdAt): AccountModel
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -142,10 +196,12 @@ class AccountModel {
 
     /**
      * @param string $lastConnection
+     * @return AccountModel
      */
-    public function setLastConnection(string $lastConnection): void
+    public function setLastConnection(string $lastConnection): AccountModel
     {
         $this->lastConnection = $lastConnection;
+        return $this;
     }
 
     /**
@@ -158,10 +214,12 @@ class AccountModel {
 
     /**
      * @param string $profilePictureURL
+     * @return AccountModel
      */
-    public function setProfilePictureURL(string $profilePictureURL): void
+    public function setProfilePictureURL(string $profilePictureURL): AccountModel
     {
         $this->profilePictureURL = $profilePictureURL;
+        return $this;
     }
 
     /**
@@ -174,10 +232,12 @@ class AccountModel {
 
     /**
      * @param RoleModel $role
+     * @return AccountModel
      */
-    public function setRole(RoleModel $role): void
+    public function setRole(RoleModel $role): AccountModel
     {
         $this->role = $role;
+        return $this;
     }
 
 }
