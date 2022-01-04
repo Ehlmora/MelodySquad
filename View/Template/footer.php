@@ -1,5 +1,5 @@
         </main>
-        <footer class="container-fluid border-top bg-white mt-3">
+        <footer class="container-fluid border-top bg-white">
             <div class="d-flex flex-wrap align-items-top justify-content-evenly py-3">
                 <div>
                     <a href="/">
