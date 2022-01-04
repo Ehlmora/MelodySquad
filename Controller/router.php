@@ -17,6 +17,7 @@ switch(ROUTE[0]) {
     case 'login'        : AccountController::login(); break;
     case 'disconnect'   : AccountController::disconnect(); break;
     case 'signin'       : AccountController::create(); break;
+    case 'profile'      : AccountController::profile(); break;
     case 'dashboard'    :
 
         switch(ROUTE[1]) {

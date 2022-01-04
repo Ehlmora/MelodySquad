@@ -22,13 +22,3 @@
         </button>
     </div>
 </section>
-<!--<section class="container-fluid bg-primary p-4">
-    <h1>Votre avenir commence ici</h1>
-    <p>Apprenez à apprendre. Découvrez les compétences de demain. Et prenenez votre carrière en main.</p>
-</section>
-<section class="container-fluid bg-secondary p-4">
-    <h1>Retrouvez nos formations</h1>
-</section>
-<section class="container-fluid bg-warning p-4">
-    <h1>Nos cours</h1>
-</section>-->

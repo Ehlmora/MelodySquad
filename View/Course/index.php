@@ -45,7 +45,6 @@
         <?php } ?>
     </div>
 </section>
-
 <script>
     function updateShownCourses() {
 
@@ -54,21 +53,20 @@
         let categoryId = document.getElementById("select_category").value;
         let difficultyId = document.getElementById("select_difficulty").value;
 
-        let coursesList = document.getElementById("courses_list").innerHTML;
-
-        if(window.XMLHttpRequest) request = new XMLHttpRequest();
-        else if (window.ActiveXObject) request = new ActiveXObject("Msxml2.XMLHTTP");
+        let coursesList = document.getElementById("courses_list");
 
         $.ajax({
             method: "POST",
-            url: "/api/filteredCourses",
+            url: "api/filteredCourses",
+            dataType: "text",
             data: {
                 category: categoryId,
                 difficulty: difficultyId
             },
-            success: function(data, status, xhr) {
+            success: function(data) {
 
-                console.log(JSON.parse(data));
+                coursesList.innerHTML = "";
+                coursesList.innerHTML += data;
 
             }
         });

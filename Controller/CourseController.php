@@ -58,6 +58,29 @@ class CourseController extends Controller
         $courseDao = new CourseDAO();
         $courses = $courseDao->getAllByCategoryAndDifficulty($category, $difficulty);
 
-        echo json_encode($courses);
+        $response = "";
+
+        foreach($courses as $course) {
+
+            $response .= '<a href="/courses/' . StringManipulator::slugify($course['title']) . '" class="card text-decoration-none link-dark mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="' . $course['pictureURL'] . '" class="img-fluid ms-rounded">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body h-100">
+                            <h5 card="card-title">' . $course['title'] . '</h5>
+                            <p class="card-category" style="color: #' . $course['color'] . '">' . $course['category'] . '</p>
+                            <p class="text-nowrap text-truncate h-100">' . $course['description'] . '</p>
+                        </div>
+                    </div>
+                </div>
+            </a>';
+        }
+
+
+        ob_clean();
+        echo $response;
+        exit();
     }
 }
