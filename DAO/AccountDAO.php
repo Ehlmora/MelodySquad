@@ -1,11 +1,10 @@
 <?php
 
-class DAOAccount extends DAO{
+class AccountDAO extends DAO{
   private $account;
   
   public function __construct($A) {
     $this->account = $A;
-	$this->connexion = null;
   }
   
   public function connect(){
