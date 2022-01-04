@@ -85,7 +85,6 @@ h3 {
 }
 
 .card-category {
-    color: var(--ms-purple);
     text-transform: uppercase;
 }
 
@@ -153,6 +152,12 @@ hr {
 
 .card > img {
     border-radius: var(--ms-border-radius);
+}
+
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
 }
 
 .nav-link:hover, .nav-link:focus {
