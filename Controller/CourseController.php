@@ -1,12 +1,16 @@
 <?php
 
 require_once '../Controller/Controller.php';
+require_once '../Model/CourseModel.php';
+require_once '../DAO/CourseDAO.php';
 
 class CourseController extends Controller
 {
 
     public static function index()
     {
+        $dao = new CourseDAO();
+        $courses = $dao->getAll();
         include_once '../View/Course/index.php';
     }
 
