@@ -33,7 +33,7 @@ class FormationDAO extends DAO
 
             $this->connect();
 
-            $query  = "SELECT title, description, content, pictureURL, category.name AS category FROM formation INNER JOIN category ON category_id = category.id";
+            $query  = "SELECT title, description, content, pictureURL, category.name AS category, category.color AS color FROM formation INNER JOIN category ON category_id = category.id";
             $sth    = $this->connection->prepare($query);
             $result = $sth->execute([]);
 
