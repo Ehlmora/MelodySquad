@@ -37,7 +37,7 @@
                         <img src="https://github.com/mdo.png" alt="Profile picture" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="/courses-taken">Mes cours</a></li>
+                        <li><a class="dropdown-item" href="/dashboard/courses-taken">Mes cours</a></li>
                         <li><a class="dropdown-item" href="/profile">Mon profil</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/disconnect">Se déconnecter</a></li>
