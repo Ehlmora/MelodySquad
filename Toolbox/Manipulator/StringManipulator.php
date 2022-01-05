@@ -29,4 +29,10 @@ class StringManipulator
         return $text;
     }
 
+    public static function emptyAsSlash($text) {
+
+        return empty($text) ? "/" : $text;
+
+    }
+
 }

@@ -8,6 +8,7 @@ require_once '../Config/database.php';
 
 // Load toolbox classes
 require_once '../Toolbox/Manipulator/StringManipulator.php';
+require_once '../Toolbox/Validator/PermissionValidator.php';
 
 // Header
 include '../View/Template/header.php';

@@ -78,7 +78,6 @@ class CourseController extends Controller
             </a>';
         }
 
-
         ob_clean();
         echo $response;
         exit();

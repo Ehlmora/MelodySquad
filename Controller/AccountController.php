@@ -37,11 +37,17 @@ class AccountController extends Controller
 
     public static function login() {
 
+        // Permission check
+        PermissionValidator::onlyNotConnected();
+
         include_once "../View/Account/login.php";
 
     }
 
     public static function signin($username, $mail, $password, $password_confirmation) {
+
+        // Permission check
+        PermissionValidator::onlyNotConnected();
 
         // Validator
         $user = new AccountModel(
@@ -104,16 +110,57 @@ class AccountController extends Controller
         );
 
         $dao = new AccountDAO($user);
-        $user->setId($dao->userConnection());
+        if(!$dao->verifyPassword()) {
+            ob_clean();
+            echo false;
+            exit();
+        }
 
+        $dao->getUserByMail();
+        $dao->updateLastConnection();
+
+        // Log the user on his account after signin
         $_SESSION['user_id'] = $user->getId();
-        header('Location: /');
+        $_SESSION['role_id'] = $user->getRole()->getId();
+        $_SESSION['pictureURL'] = $user->getProfilePictureURL();
+
+        ob_clean();
+        echo true;
         exit();
     }
 
     public static function dashboard() {
 
+        // Permission check
+        PermissionValidator::onlyConnected();
+
         include_once '../View/Dashboard/courses-taken.php';
+
+    }
+
+    public static function profile() {
+
+        // Permission check
+        PermissionValidator::onlyConnected();
+
+        $user = new AccountModel(
+            $_SESSION['user_id'],
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            new RoleModel($_SESSION['role_id'], "", [])
+        );
+
+        $dao = new AccountDAO($user);
+        $dao->getAccountById();
+
+        include_once '../View/Account/profile.php';
 
     }
 }
