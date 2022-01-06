@@ -40,8 +40,10 @@ if(ROUTE[0] != "api") {
         default             : include_once '../View/Error/404.php'; break;
     }
 } else {
+
     // API Permission check
     PermissionValidator::onlyAPI();
+
     switch(ROUTE[1]) {
         case 'profile':
             switch (ROUTE[2]) {
@@ -53,7 +55,7 @@ if(ROUTE[0] != "api") {
                 $_POST['category'] ?? '%',
                 $_POST['difficulty'] ?? '%'
             ); break;
-        case 'signin_store' :
+        case 'signin' :
             AccountController::signin(
                 $_POST['signin_username'] ?? "",
                 $_POST['signin_mail'] ?? "",

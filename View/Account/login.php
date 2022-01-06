@@ -4,11 +4,11 @@
         <hr>
         <form name="login_form" id="login_form" method="POST" action="api/connect">
             <div class="form-floating mb-3">
-                <input type="email" name="login_mail" id="login_mail" class="form-control" required>
+                <input type="email" name="login_mail" id="login_mail" class="form-control" placeholder="name@example.fr" required>
                 <label for="login_mail" class="form-label">E-mail</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="password" name="login_password" id="login_password" class="form-control" required>
+                <input type="password" name="login_password" id="login_password" class="form-control" placeholder="Mot de passe" required>
                 <label for="login_password" class="form-label">Mot de passe</label>
             </div>
         </form>
@@ -18,30 +18,31 @@
 
 <script>
 
+    let form = document.getElementById("login_form");
+    let mail = document.getElementById("login_mail");
+    let password = document.getElementById("login_password");
+
     function connect() {
-
-        let form = document.getElementById("login_form");
-        let mail = document.getElementById("login_mail");
-        let password = document.getElementById("login_password");
-
-        let error = document.getElementById("error");
 
         $.ajax({
             method: "POST",
             url: "api/connect",
-            dataType: "text",
+            dataType: "json",
             data: {
                 login_mail: mail.value,
                 login_password: password.value,
                 permission: "api"
             },
-            success: function(data) {
+            success: function(response) {
 
-                if(data == true) window.location.replace("/");
+                if(response.success) window.location.replace("/");
                 else {
                     let error = document.createElement("div");
-                    error.classList.add("alert", "alert-danger");
-                    error.innerText = "Combinaison adresse mail/mot de passe incorrect !";
+                    error.id = "login_error";
+                    error.classList.add("alert", response.success ? "alert-success" : "alert-danger", "alert-dismissible", "fade", "show");
+                    error.innerText = response.data;
+                    error.innerHTML += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    if(document.getElementById("login_error") != null) form.removeChild(error);
                     form.appendChild(error);
                 }
             }

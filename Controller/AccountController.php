@@ -17,6 +17,9 @@ class AccountController extends Controller
 
     public static function create()
     {
+        // Permission check
+        PermissionValidator::onlyNotConnected();
+
         include_once "../View/Account/signin.php";
     }
 
@@ -42,91 +45,6 @@ class AccountController extends Controller
 
         include_once "../View/Account/login.php";
 
-    }
-
-    public static function signin($username, $mail, $password, $password_confirmation) {
-
-        // Permission check
-        PermissionValidator::onlyNotConnected();
-
-        // Validator
-        $user = new AccountModel(
-            0,
-            "",
-            "",
-            $username,
-            "",
-            $mail,
-            "",
-            "",
-            "",
-            "",
-            new RoleModel(3, "Membre", [])
-        );
-
-        // Hash
-        $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
-
-        if(!password_verify($password_confirmation, $user->getPassword())) {
-
-            header("Location: /signin");
-            die('<div class="alert alert-danger" role="alert">Les mots de passes sont différents<div/>');
-
-        }
-
-        $dao = new AccountDAO($user);
-        if($dao->create()) {
-
-            $_SESSION['user_id'] = $user->getId();
-            header('Location: /');
-            exit();
-
-        }
-
-    }
-
-    public static function disconnect()
-    {
-        session_destroy();
-        header('Location: /');
-        exit();
-    }
-
-    public static function connect($mail, $password)
-    {
-        // Validator
-        $user = new AccountModel(
-            0,
-            "",
-            "",
-            "",
-            "",
-            $mail,
-            $password,
-            "",
-            "",
-            "",
-            new RoleModel(3, "Membre", [])
-        );
-
-        $dao = new AccountDAO($user);
-        if(!$dao->verifyPassword()) {
-            ob_clean();
-            echo false;
-            exit();
-        }
-
-        $dao->getUserByMail();
-        $dao->updateLastConnection();
-
-        // Log the user on his account after signin
-        $_SESSION['user_id'] = $user->getId();
-        $_SESSION['role_id'] = $user->getRole()->getId();
-        $_SESSION['pictureURL'] = $user->getProfilePictureURL();
-
-        ob_clean();
-        echo true;
-        exit();
     }
 
     public static function dashboard() {
@@ -163,4 +81,98 @@ class AccountController extends Controller
         include_once '../View/Account/profile.php';
 
     }
+
+    public static function disconnect()
+    {
+        // Permission check
+        PermissionValidator::onlyConnected();
+
+        session_destroy();
+        header('Location: /');
+        exit();
+    }
+
+    /**
+     * API Processing
+     */
+    public static function signin($username, $mail, $password, $passwordConfirmation) {
+
+        // Hash
+        $password = password_hash($password, PASSWORD_BCRYPT);
+
+        // Field validator
+        if(FormValidator::passwordConfirmation($password, $passwordConfirmation))  {
+            ob_clean();
+            exit();
+        }
+
+        // Model
+        $user = new AccountModel(
+            0,
+            "",
+            "",
+            $username,
+            "",
+            $mail,
+            $password,
+            "",
+            "",
+            "",
+            new RoleModel(3, "Membre", [])
+        );
+
+        // DAO Processing
+        $dao = new AccountDAO($user);
+        if(!$dao->getAccountByMail()) {
+            Response::send(false, "L'adresse mail est déjà utilisée.");
+        }
+        if(!$dao->getAccountByUsername()) {
+            Response::send(false, "Le nom d'utilisateur est déjà utilisé.");
+        }
+
+        if($dao->create()) {
+            $_SESSION['user_id'] = $user->getId();
+            Response::send(true, "");
+        }
+    }
+
+    public static function connect($mail, $password)
+    {
+        $response = [];
+
+        // Validator
+        if(FormValidator::isEmpty($mail) || FormValidator::isEmpty($password)) {
+            Response::send(false, "Un ou plusieurs champ est vide");
+        }
+
+        $user = new AccountModel(
+            0,
+            "",
+            "",
+            "",
+            "",
+            $mail,
+            $password,
+            "",
+            "",
+            "",
+            new RoleModel(3, "Membre", [])
+        );
+
+        $dao = new AccountDAO($user);
+        if(!$dao->verifyPassword()) {
+            Response::send(false, "Combinaison adresse mail/mot de passe incorrect !");
+        }
+
+        $dao->getAccountByMail();
+        $dao->updateLastConnection();
+
+        // Log the user on his account after signin
+        $_SESSION['user_id'] = $user->getId();
+        $_SESSION['role_id'] = $user->getRole()->getId();
+        $_SESSION['pictureURL'] = $user->getProfilePictureURL();
+
+        Response::send(true, "La connexion va être établie");
+    }
+
 }

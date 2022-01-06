@@ -61,9 +61,9 @@ class AccountDAO extends DAO
                 ":mail" => $this->account->getMail()
             ]);
 
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $account = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $this->account->setId($user['id']);
+            $this->account->setId($account['id']);
 
             $this->connection = null;
 
@@ -88,13 +88,13 @@ class AccountDAO extends DAO
                 ":mail" => $this->account->getMail()
             ]);
 
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $account = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $this->connection = null;
 
-            if($user === false) return false;
+            if($account === false) return false;
 
-            return password_verify($this->account->getPassword(), $user['password']);
+            return password_verify($this->account->getPassword(), $account['password']);
 
 
         } catch (PDOException $e) {
@@ -121,25 +121,80 @@ class AccountDAO extends DAO
 
     }
 
-    public function getUserByMail() {
+    public function getAccountByUsername() {
+        try {
+
+            $this->connect();
+
+            $query  = "
+                SELECT firstname, lastname, username, birthDate, mail, createdAt, lastConnection, pictureURL, role_id, role.name AS role_name
+                FROM account 
+                INNER JOIN role ON account.role_id = role.id
+                WHERE account.username = :username";
+            $stmt    = $this->connection->prepare($query);
+            $result = $stmt->execute([
+                ":username" => $this->account->getUsername()
+            ]);
+
+            $account = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->connection = null;
+
+            if($stmt->rowCount() == 0) return false;
+
+            $this->account->setFirstname($account['firstname'] ?? "");
+            $this->account->setLastname($account['lastname'] ?? "");
+            $this->account->setUsername($account['username']);
+            $this->account->setBirthDate($account['birthDate'] ?? "");
+            $this->account->setMail($account['mail']);
+            $this->account->setCreatedAt($account['createdAt']);
+            $this->account->setLastConnection($account['lastConnection']);
+            $this->account->setProfilePictureURL($account['pictureURL'] ?? "");
+            $this->account->setRole(new RoleModel($account['role_id'], $account['role_name'], []));
+
+            return true;
+
+        } catch (PDOException $e) {
+
+            print '<div class="alert alert-danger" role="alert">[Erreur]: ' . $e->getMessage() . '<div/>';
+            die();
+
+        }
+    }
+
+    public function getAccountByMail() {
 
         try {
 
             $this->connect();
 
-            $query  = "SELECT id, password, role_id, pictureURL FROM account WHERE mail = :mail";
+            $query  = "
+                SELECT firstname, lastname, username, birthDate, mail, createdAt, lastConnection, pictureURL, role_id, role.name AS role_name
+                FROM account 
+                INNER JOIN role ON account.role_id = role.id
+                WHERE account.mail = :mail";
             $stmt    = $this->connection->prepare($query);
             $result = $stmt->execute([
                 ":mail" => $this->account->getMail()
             ]);
 
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $account = $stmt->fetch();
 
             $this->connection = null;
 
-            $this->account->setId($user['id']);
-            $this->account->setRole(new RoleModel($user['role_id'], "", []));
-            $this->account->setProfilePictureURL($user['pictureURL']);
+            if($stmt->rowCount() == 0) return false;
+
+            $this->account->setFirstname($account['firstname'] ?? "");
+            $this->account->setLastname($account['lastname'] ?? "");
+            $this->account->setUsername($account['username']);
+            $this->account->setBirthDate($account['birthDate'] ?? "");
+            $this->account->setMail($account['mail']);
+            $this->account->setCreatedAt($account['createdAt']);
+            $this->account->setLastConnection($account['lastConnection']);
+            $this->account->setProfilePictureURL($account['pictureURL'] ?? "");
+            $this->account->setRole(new RoleModel($account['role_id'], $account['role_name'], []));
+
+            return true;
 
         } catch (PDOException $e) {
 
@@ -167,17 +222,21 @@ class AccountDAO extends DAO
 
             $this->connection = null;
 
-            $user = $stmt->fetch();
+            $account = $stmt->fetch();
 
-            $this->account->setFirstname($user['firstname'] ?? "");
-            $this->account->setLastname($user['lastname'] ?? "");
-            $this->account->setUsername($user['username']);
-            $this->account->setBirthDate($user['birthDate'] ?? "");
-            $this->account->setMail($user['mail']);
-            $this->account->setCreatedAt($user['createdAt']);
-            $this->account->setLastConnection($user['lastConnection']);
-            $this->account->setProfilePictureURL($user['pictureURL'] ?? "");
-            $this->account->setRole(new RoleModel($user['role_id'], $user['role_name'], []));
+            if($stmt->rowCount() == 0) return false;
+
+            $this->account->setFirstname($account['firstname'] ?? "");
+            $this->account->setLastname($account['lastname'] ?? "");
+            $this->account->setUsername($account['username']);
+            $this->account->setBirthDate($account['birthDate'] ?? "");
+            $this->account->setMail($account['mail']);
+            $this->account->setCreatedAt($account['createdAt']);
+            $this->account->setLastConnection($account['lastConnection']);
+            $this->account->setProfilePictureURL($account['pictureURL'] ?? "");
+            $this->account->setRole(new RoleModel($account['role_id'], $account['role_name'], []));
+
+            return true;
 
         } catch (PDOException $e) {
 
