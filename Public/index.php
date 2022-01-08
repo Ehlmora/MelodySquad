@@ -12,6 +12,11 @@ require_once '../Toolbox/Validator/PermissionValidator.php';
 require_once '../Toolbox/Validator/FormValidator.php';
 require_once '../Toolbox/Response.php';
 
+// Get route
+$route = explode("/", $_GET['route']);
+if(end($route) != '') $route[] = '';
+define("ROUTE", $route);
+
 // Header
 include '../View/Template/header.php';
 

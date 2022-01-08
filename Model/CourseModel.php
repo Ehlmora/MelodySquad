@@ -9,17 +9,9 @@ class CourseModel {
 	private string $updatedAt;
 	private bool $isPublished;
     private array $parts;
+    private string $slug;
 
-    /**
-     * @param int $id
-     * @param string $title
-     * @param string $description
-     * @param string $createdAt
-     * @param string $updatedAt
-     * @param bool $isPublished
-     * @param array $parts
-     */
-    public function __construct(int $id, string $title, string $description, string $createdAt, string $updatedAt, bool $isPublished, array $parts)
+    public function __construct(int $id, string $title, string $description, string $createdAt, string $updatedAt, bool $isPublished, array $parts, string $slug)
     {
         $this->id = $id;
         $this->title = $title;
@@ -28,6 +20,7 @@ class CourseModel {
         $this->updatedAt = $updatedAt;
         $this->isPublished = $isPublished;
         $this->parts = $parts;
+        $this->slug = $slug;
     }
 
     /**

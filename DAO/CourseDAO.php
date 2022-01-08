@@ -12,7 +12,7 @@ class CourseDAO extends DAO
     {
         parent::__construct();
 
-        if($course == null) $course = new CourseModel(0, '', '', date("Y-m-d H:i:s"), date("Y-m-d H:i:s"), false, []);
+        if($course == null) $course = new CourseModel(0, '', '', date("Y-m-d H:i:s"), date("Y-m-d H:i:s"), false, [], "");
         $this->course = $course;
     }
 
@@ -41,7 +41,7 @@ class CourseDAO extends DAO
 
             $this->connection = null;
 
-            return $sth->fetchAll();
+            return $sth->fetchAll(PDO::FETCH_ASSOC);
 
 
         } catch (PDOException $e) {
@@ -63,7 +63,7 @@ class CourseDAO extends DAO
             $this->connect();
 
             $query  = "
-                SELECT title, description, pictureURL, category.name AS category, category.color AS color 
+                SELECT title, description, pictureURL, slug, category.name AS category, category.color AS color 
                 FROM course INNER JOIN category ON course.category_id = category.id 
                 WHERE category_id LIKE :category AND difficulty_id LIKE :difficulty
             ";
@@ -75,7 +75,7 @@ class CourseDAO extends DAO
 
             $this->connection = null;
 
-            return $sth->fetchAll();
+            return $sth->fetchAll(PDO::FETCH_ASSOC);
 
         } catch (PDOException $e) {
 

@@ -11,21 +11,37 @@ class CourseController extends Controller
 
     public static function index()
     {
-        $courseDao = new CourseDAO();
-        $courses = $courseDao->getAll();
+        // Model
+        $category = new CategoryModel(0,"");
+        $difficulty = new DifficultyModel(0, "");
 
-        $categoryDao = new CategoryDAO();
-        $categories = $categoryDao->getAll();
+        // DAO Processing
+        $categoryDAO = new CategoryDAO($category);
+        $categories = $categoryDAO->getAll();
 
-        $difficultyDao = new DifficultyDAO();
-        $difficulties = $difficultyDao->getAll();
+        $difficultyDAO = new DifficultyDAO($difficulty);
+        $difficulties = $difficultyDAO->getAll();
 
         include_once '../View/Course/index.php';
     }
 
-    public static function show() {
+    public static function show($slug) {
 
+        $course = new CourseModel(
+            0,
+            "",
+            "",
+            "",
+            "",
+            false,
+            [],
+            $slug
+        );
 
+        $dao = new CourseDAO($course);
+        $dao->getBySlug();
+
+        include_once "../View/Course/show.php";
 
     }
 
@@ -58,28 +74,6 @@ class CourseController extends Controller
         $courseDao = new CourseDAO();
         $courses = $courseDao->getAllByCategoryAndDifficulty($category, $difficulty);
 
-        $response = "";
-
-        foreach($courses as $course) {
-
-            $response .= '<a href="/courses/' . StringManipulator::slugify($course['title']) . '" class="card text-decoration-none link-dark mb-3">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="' . $course['pictureURL'] . '" class="img-fluid ms-rounded">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body h-100">
-                            <h5 card="card-title">' . $course['title'] . '</h5>
-                            <p class="card-category" style="color: #' . $course['color'] . '">' . $course['category'] . '</p>
-                            <p class="text-nowrap text-truncate h-100">' . $course['description'] . '</p>
-                        </div>
-                    </div>
-                </div>
-            </a>';
-        }
-
-        ob_clean();
-        echo $response;
-        exit();
+        Response::send(true, $courses);
     }
 }

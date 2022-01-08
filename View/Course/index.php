@@ -6,7 +6,7 @@
                 <div class="input-group">
                     <label class="input-group-text ms-rounded" for="select_category">Catégorie</label>
                     <select id="select_category" class="form-select ms-rounded" onchange="updateShownCourses()">
-                        <option value="*" selected>Toutes</option>
+                        <option value="%" selected>Toutes</option>
                         <?php foreach($categories as $category) { ?>
                             <option value="<?= $category['id']; ?>"><?= $category['name']; ?></option>
                         <?php } ?>
@@ -17,7 +17,7 @@
                 <div class="input-group">
                     <label class="input-group-text ms-rounded" for="select_difficulty">Difficulté</label>
                     <select id="select_difficulty" class="form-select ms-rounded" onchange="updateShownCourses()">
-                        <option value="*" selected>Toutes</option>
+                        <option value="%" selected>Toutes</option>
                         <?php foreach($difficulties as $difficulty) { ?>
                             <option value="<?= $difficulty['id']; ?>"><?= $difficulty['name']; ?></option>
                         <?php } ?>
@@ -42,16 +42,37 @@
         $.ajax({
             method: "POST",
             url: "api/filteredCourses",
-            dataType: "text",
+            dataType: "json",
             data: {
                 category: categoryId,
                 difficulty: difficultyId,
                 permission: "api"
             },
-            success: function(data) {
+            success: function(response) {
 
-                coursesList.innerHTML = "";
-                coursesList.innerHTML += data;
+                console.log(response.data);
+                coursesList.innerText = "";
+                response.data.forEach(course => {
+                    let template = '' +
+                        '<a href="/courses/' + course.slug + '" class="card text-decoration-none link-dark mb-3">' +
+                            '<div class="row g-0">' +
+                                '<div class="col-md-4">' +
+                                '<img src="' + course.pictureURL + '" class="img-fluid ms-rounded">' +
+                            '</div>' +
+                            '<div class="col-md-8">' +
+                                '<div class="card-body h-100">' +
+                                    '<h5 card="card-title">' + course.title + '</h5>' +
+                                    '<p class="card-category" style="color: #' + course.color + '">' + course.category + '</p>' +
+                                    '<p class="text-nowrap text-truncate h-100">' + course.description + '</p>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</a>';
+
+                    coursesList.innerHTML += template;
+                });
+
+
 
             }
         });

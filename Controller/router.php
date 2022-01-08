@@ -7,20 +7,21 @@ require_once '../Controller/AccountController.php';
 // Explode route to get an array of arguments
 // This allow use to use multiple arguments URL like /dashboard/courses/{title}
 
-$route = explode("/", $_GET['route']);
-if(end($route) != '') $route[] = '';
-define("ROUTE", $route);
-
-
-
 // Read first argument and redirect to the right controller
 if(ROUTE[0] != "api") {
 
     switch(ROUTE[0]) {
 
         case ''             :   include_once '../View/Home/index.php'; break;
-        case 'formations'   :   FormationController::index(); break;
-        case 'courses'      :   CourseController::index(); break;
+        case 'formations'   :
+            switch(ROUTE[1]) {
+                case '': FormationController::index(); break;
+            } break;
+        case 'courses'      :
+            switch (ROUTE[1]) {
+                case '' : CourseController::index(); break;
+                default : CourseController::show(ROUTE[1]); break;
+            } break;
         case 'login'        :   AccountController::login(); break;
         case 'disconnect'   :   AccountController::disconnect(); break;
         case 'signin'       :   AccountController::create(); break;
@@ -57,10 +58,10 @@ if(ROUTE[0] != "api") {
             ); break;
         case 'signin' :
             AccountController::signin(
-                $_POST['signin_username'] ?? "",
-                $_POST['signin_mail'] ?? "",
-                $_POST['signin_password'] ?? "",
-                $_POST['signin_password_confirmation'] ?? ""
+                $_POST['username'] ?? "",
+                $_POST['mail'] ?? "",
+                $_POST['password'] ?? "",
+                $_POST['passwordConfirmation'] ?? ""
             ); break;
         case 'connect'      :
             AccountController::connect(

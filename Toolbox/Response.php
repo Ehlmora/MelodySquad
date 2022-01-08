@@ -2,15 +2,15 @@
 
 class Response
 {
-    public static function send(bool $success, $data) {
+    public static function send(bool $success, $data, $options = []) {
 
         $response = [
             "success" => $success,
-            "data"    => $data
+            "data"    => $data,
+            "options" => $options
         ];
         ob_clean();
         echo json_encode($response);
         exit();
-
     }
 }

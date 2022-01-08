@@ -30,33 +30,36 @@
 
 <script>
     // Form
-    let form = document.getElementById("signin_form");
-
-    // Fields
-    let usernameField = document.getElementById("signin_username");
-    let mailField = document.getElementById("signin_mail");
-    let passwordField = document.getElementById("signin_password");
-    let passwordConfirmationField = document.getElementById("signin_password_confirmation");
-
-    // Feedbacks
-    let usernameFeedback = document.getElementById("signin_username_feedback");
-    let mailFeedback = document.getElementById("signin_mail_feedback");
-    let passwordFeedback = document.getElementById("signin_password_feedback");
-    let passwordConfirmationFeedback = document.getElementById("signin_password_confirmation_feedback");
+    let form = {
+        id: document.getElementById("signin_form"),
+        fields: {
+            username: document.getElementById("signin_username"),
+            mail: document.getElementById("signin_mail"),
+            password: document.getElementById("signin_password"),
+            passwordConfirmation: document.getElementById("signin_password_confirmation")
+        },
+        feedbacks: {
+            username: document.getElementById("signin_username_feedback"),
+            mail: document.getElementById("signin_mail_feedback"),
+            password: document.getElementById("signin_password_feedback"),
+            passwordConfirmation: document.getElementById("signin_password_confirmation_feedback")
+        }
+    };
 
     function usernameValidator() {
 
         let regex = /(?!.*[\.\-\_]{2,})^[a-zA-Z0-9\.\-\_]{3,24}$/gm;
-        let username = usernameField.value;
-        let isValid = regex.test(username);
+        let field = form.fields.username;
+        let feedback = form.feedbacks.username;
+        let isValid = regex.test(field.value);
 
-        usernameField.classList.toggle("is-valid", isValid);
-        usernameField.classList.toggle("is-invalid", !isValid);
+        field.classList.toggle("is-valid", isValid);
+        field.classList.toggle("is-invalid", !isValid);
 
-        usernameFeedback.classList.toggle("valid-feedback", isValid);
-        usernameFeedback.classList.toggle("invalid-feedback", !isValid);
+        feedback.classList.toggle("valid-feedback", isValid);
+        feedback.classList.toggle("invalid-feedback", !isValid);
 
-        usernameFeedback.innerText =
+        feedback.innerText =
             isValid ?
             "C'est bon !" :
             "Doit avoir une longueur de 3 à 24 caractères. Peut contenir : lettres, nombres, caractères spéciaux (._-).";
@@ -67,16 +70,17 @@
     function mailValidator() {
 
         let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        let mail = mailField.value;
-        let isValid = regex.test(mail);
+        let field = form.fields.mail;
+        let feedback = form.feedbacks.mail;
+        let isValid = regex.test(field.value);
 
-        mailField.classList.toggle("is-valid", isValid);
-        mailField.classList.toggle("is-invalid", !isValid);
+        field.classList.toggle("is-valid", isValid);
+        field.classList.toggle("is-invalid", !isValid);
 
-        mailFeedback.classList.toggle("valid-feedback", isValid);
-        mailFeedback.classList.toggle("invalid-feedback", !isValid);
+        feedback.classList.toggle("valid-feedback", isValid);
+        feedback.classList.toggle("invalid-feedback", !isValid);
 
-        mailFeedback.innerText =
+        feedback.innerText =
             isValid ?
             "C'est bon !" :
             "Doit avoir le format : nom@exemple.fr";
@@ -87,16 +91,17 @@
     function passwordValidator() {
 
         let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
-        let password = passwordField.value;
-        let isValid = regex.test(password);
+        let field = form.fields.password;
+        let feedback = form.feedbacks.password;
+        let isValid = regex.test(field.value);
 
-        passwordField.classList.toggle("is-valid", isValid);
-        passwordField.classList.toggle("is-invalid", !isValid);
+        field.classList.toggle("is-valid", isValid);
+        field.classList.toggle("is-invalid", !isValid);
 
-        passwordFeedback.classList.toggle("valid-feedback", isValid);
-        passwordFeedback.classList.toggle("invalid-feedback", !isValid);
+        feedback.classList.toggle("valid-feedback", isValid);
+        feedback.classList.toggle("invalid-feedback", !isValid);
 
-        passwordFeedback.innerText =
+        feedback.innerText =
             isValid ?
             "C'est bon !" :
             "Doit avoir au moins 8 caractères. Doit contenir au moins 1 lettre majuscule, 1 lettre minuscule et 1 nombre. Peut contenir des caractères spéciaux.";
@@ -109,15 +114,17 @@
     function passwordConfirmationValidator() {
 
         let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
-        let isValid = passwordField.value == passwordConfirmationField.value && regex.test(passwordConfirmationField.value);
+        let field = form.fields.passwordConfirmation;
+        let feedback = form.feedbacks.passwordConfirmation;
+        let isValid = form.fields.password.value == field.value && regex.test(field.value);
 
-        passwordConfirmationField.classList.toggle("is-valid", isValid);
-        passwordConfirmationField.classList.toggle("is-invalid", !isValid);
+        field.classList.toggle("is-valid", isValid);
+        field.classList.toggle("is-invalid", !isValid);
 
-        passwordConfirmationFeedback.classList.toggle("valid-feedback", isValid);
-        passwordConfirmationFeedback.classList.toggle("invalid-feedback", !isValid);
+        feedback.classList.toggle("valid-feedback", isValid);
+        feedback.classList.toggle("invalid-feedback", !isValid);
 
-        passwordConfirmationFeedback.innerText =
+        feedback.innerText =
             isValid ?
             "C'est bon !" :
             "Les mots de passe sont différents.";
@@ -134,29 +141,27 @@
                 url: "api/signin",
                 dataType: "json",
                 data: {
-                    signin_username: usernameField.value,
-                    signin_mail: mailField.value,
-                    signin_password: passwordField.value,
-                    signin_password_confirmation: passwordConfirmationField.value,
-                    permission: "api"
+                    username            : form.fields.username.value,
+                    mail                : form.fields.mail.value,
+                    password            : form.fields.password.value,
+                    passwordConfirmation: form.fields.passwordConfirmation.value,
+                    permission          : "api"
                 },
                 success: function (response) {
-
-
                     if (response.success) window.location.replace("/");
                     else {
-                        let error = document.createElement("div");
-                        error.id = "signin_error";
-                        error.classList.add("alert", response.success ? "alert-success" : "alert-danger", "alert-dismissible", "fade", "show");
-                        error.innerText = response.data;
-                        error.innerHTML += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-                        if (document.getElementById("signin_error") != null) form.removeChild(error);
-                        form.appendChild(error);
+                        if(typeof response.options.failedField !== undefined) {
+                            let field       = form.fields[response.options.failedField];
+                            let feedback    = form.feedbacks[response.options.failedField];
+
+                            field.classList.replace("is-valid", "is-invalid");
+                            feedback.classList.replace("valid-feedback", "invalid-feedback");
+                            feedback.innerText = response.data;
+                        }
                     }
                 }
             });
         }
-
     }
 
 </script>

@@ -33,11 +33,6 @@ class AccountController extends Controller
         // TODO: Implement update() method.
     }
 
-    public static function delete()
-    {
-        // TODO: Implement delete() method.
-    }
-
     public static function login() {
 
         // Permission check
@@ -101,9 +96,10 @@ class AccountController extends Controller
         $password = password_hash($password, PASSWORD_BCRYPT);
 
         // Field validator
-        if(FormValidator::passwordConfirmation($password, $passwordConfirmation))  {
-            ob_clean();
-            exit();
+        if(!FormValidator::passwordConfirmation($password, $passwordConfirmation))  {
+            Response::send(false, "Les mots de passes sont différents.", [
+                "failedField" => "password"
+            ]);
         }
 
         // Model
@@ -117,29 +113,37 @@ class AccountController extends Controller
             $password,
             "",
             "",
-            "",
+            "https://cdn-icons-png.flaticon.com/512/4825/4825027.png",
             new RoleModel(3, "Membre", [])
         );
 
         // DAO Processing
         $dao = new AccountDAO($user);
-        if(!$dao->getAccountByMail()) {
-            Response::send(false, "L'adresse mail est déjà utilisée.");
-        }
-        if(!$dao->getAccountByUsername()) {
-            Response::send(false, "Le nom d'utilisateur est déjà utilisé.");
-        }
 
-        if($dao->create()) {
-            $_SESSION['user_id'] = $user->getId();
-            Response::send(true, "");
+        // Verification if account not exist
+        if($dao->getAccountByUsername()) {
+            Response::send(false, "Le nom d'utilisateur est déjà utilisé.", [
+                "failedField" => "username"
+            ]);
         }
+        if($dao->getAccountByMail()) {
+            Response::send(false, "L'adresse mail est déjà utilisée.", [
+                "failedField" => "mail"
+            ]);
+        }
+        // If not exist : create the acccount and get informations
+        $dao->create();
+        $dao->getAccountByMail();
+
+        $_SESSION['user_id'] = $user->getId();
+        $_SESSION['role_id'] = $user->getRole()->getId();
+        $_SESSION['pictureURL'] = $user->getProfilePictureURL();
+
+        Response::send(true, "");
     }
 
     public static function connect($mail, $password)
     {
-        $response = [];
-
         // Validator
         if(FormValidator::isEmpty($mail) || FormValidator::isEmpty($password)) {
             Response::send(false, "Un ou plusieurs champ est vide");
@@ -173,6 +177,11 @@ class AccountController extends Controller
         $_SESSION['pictureURL'] = $user->getProfilePictureURL();
 
         Response::send(true, "La connexion va être établie");
+    }
+
+    public static function delete()
+    {
+        // TODO: Implement delete() method.
     }
 
 }

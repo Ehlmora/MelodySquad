@@ -14,8 +14,8 @@
                     <ul class="list-unstyled">
                         <li><a href="/formations" class="ms-footer-link link-dark">Formations</a></li>
                         <li><a href="/courses" class="ms-footer-link link-dark">Cours</a></li>
-                        <li><a href="/dashboard" class="ms-footer-link link-dark">Tableau de bord</a></li>
-                        <?php if(isset($_SESSION['user'])) { ?>
+                        <?php if(isset($_SESSION['user_id'])) { ?>
+                            <li><a href="/dashboard" class="ms-footer-link link-dark">Tableau de bord</a></li>
                             <li><a href="/disconnect" class="ms-footer-link link-dark">Se déconnecter</a></li>
                         <?php } else { ?>
                             <li><a href="/connect" class="ms-footer-link link-dark">Se connecter</a></li>

@@ -38,32 +38,21 @@ class AccountDAO extends DAO
         $this->account = $account;
     }
 
-    /**
-     * @return array
-     */
     public function create() : bool {
 
         try {
 
             $this->connect();
 
-            $query  = "INSERT INTO account(username, mail, password) VALUES (:username, :mail, :password)";
+            $query  = "INSERT INTO account(username, mail, password, pictureURL, role_id) VALUES (:username, :mail, :password, :pictureURL, :role_id)";
             $sth    = $this->connection->prepare($query);
             $result = $sth->execute([
                 ":username" => $this->account->getUsername(),
                 ":mail"     => $this->account->getMail(),
-                ":password" => $this->account->getPassword()
+                ":password" => $this->account->getPassword(),
+                ":pictureURL" => $this->account->getProfilePictureURL(),
+                ":role_id" => $this->account->getRole()->getId()
             ]);
-
-            $query  = "SELECT id FROM account WHERE mail = :mail";
-            $stmt    = $this->connection->prepare($query);
-            $result = $stmt->execute([
-                ":mail" => $this->account->getMail()
-            ]);
-
-            $account = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            $this->account->setId($account['id']);
 
             $this->connection = null;
 
@@ -107,18 +96,25 @@ class AccountDAO extends DAO
     }
 
     public function updateLastConnection() {
+        try {
 
-        $this->connect();
+            $this->connect();
 
-        $query  = "UPDATE account SET lastConnection = :lastConnection WHERE id = :id";
-        $stmt   = $this->connection->prepare($query);
-        $stmt->execute([
-            ":lastConnection"   => date('Y-m-d H:i:s'),
-            ":id"               => $this->account->getId()
-        ]);
+            $query  = "UPDATE account SET lastConnection = :lastConnection WHERE id = :id";
+            $stmt   = $this->connection->prepare($query);
+            $stmt->execute([
+                ":lastConnection"   => date('Y-m-d H:i:s'),
+                ":id"               => $this->account->getId()
+            ]);
 
-        $this->connection = null;
+            $this->connection = null;
 
+        } catch (PDOException $e) {
+
+            print '<div class="alert alert-danger" role="alert">[Erreur]: ' . $e->getMessage() . '<div/>';
+            die();
+
+        }
     }
 
     public function getAccountByUsername() {
@@ -127,7 +123,7 @@ class AccountDAO extends DAO
             $this->connect();
 
             $query  = "
-                SELECT firstname, lastname, username, birthDate, mail, createdAt, lastConnection, pictureURL, role_id, role.name AS role_name
+                SELECT account.id, firstname, lastname, username, birthDate, mail, createdAt, lastConnection, pictureURL, role_id, role.name AS role_name
                 FROM account 
                 INNER JOIN role ON account.role_id = role.id
                 WHERE account.username = :username";
@@ -142,6 +138,7 @@ class AccountDAO extends DAO
 
             if($stmt->rowCount() == 0) return false;
 
+            $this->account->setId($account['id'] ?? "");
             $this->account->setFirstname($account['firstname'] ?? "");
             $this->account->setLastname($account['lastname'] ?? "");
             $this->account->setUsername($account['username']);
@@ -169,7 +166,7 @@ class AccountDAO extends DAO
             $this->connect();
 
             $query  = "
-                SELECT firstname, lastname, username, birthDate, mail, createdAt, lastConnection, pictureURL, role_id, role.name AS role_name
+                SELECT account.id, firstname, lastname, username, birthDate, mail, createdAt, lastConnection, pictureURL, role_id, role.name AS role_name
                 FROM account 
                 INNER JOIN role ON account.role_id = role.id
                 WHERE account.mail = :mail";
@@ -184,6 +181,7 @@ class AccountDAO extends DAO
 
             if($stmt->rowCount() == 0) return false;
 
+            $this->account->setId($account['id'] ?? "");
             $this->account->setFirstname($account['firstname'] ?? "");
             $this->account->setLastname($account['lastname'] ?? "");
             $this->account->setUsername($account['username']);
@@ -211,7 +209,7 @@ class AccountDAO extends DAO
             $this->connect();
 
             $query  = "
-                SELECT firstname, lastname, username, birthDate, mail, createdAt, lastConnection, pictureURL, role_id, role.name AS role_name
+                SELECT account.id, firstname, lastname, username, birthDate, mail, createdAt, lastConnection, pictureURL, role_id, role.name AS role_name
                 FROM account 
                 INNER JOIN role ON account.role_id = role.id
                 WHERE account.id = :id";
@@ -226,6 +224,7 @@ class AccountDAO extends DAO
 
             if($stmt->rowCount() == 0) return false;
 
+            $this->account->setId($account['id'] ?? "");
             $this->account->setFirstname($account['firstname'] ?? "");
             $this->account->setLastname($account['lastname'] ?? "");
             $this->account->setUsername($account['username']);
