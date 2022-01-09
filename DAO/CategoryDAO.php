@@ -12,7 +12,7 @@ class CategoryDAO extends DAO
     {
         parent::__construct();
 
-        if($category == null) $category = new CategoryModel(0, '');
+        if($category == null) $category = new CategoryModel();
         $this->category = $category;
     }
 
@@ -35,7 +35,7 @@ class CategoryDAO extends DAO
 
             $this->connect();
 
-            $query  = "SELECT id, name FROM category";
+            $query  = "SELECT id, name, color FROM category";
             $sth    = $this->connection->prepare($query);
             $result = $sth->execute([]);
 

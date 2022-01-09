@@ -10,7 +10,7 @@ class FormationDAO extends DAO
     {
         parent::__construct();
 
-        if($formation == null) $formation = new FormationModel(0, '', '', []);
+        if($formation == null) $formation = new FormationModel();
         $this->formation = $formation;
     }
 

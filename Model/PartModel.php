@@ -13,7 +13,7 @@ class PartModel {
      * @param string $description
      * @param array $chapters
      */
-    public function __construct(int $id, string $title, string $description, array $chapters)
+    public function __construct(int $id = 0, string $title = "", string $description = "", array $chapters = [])
     {
         $this->id = $id;
         $this->title = $title;

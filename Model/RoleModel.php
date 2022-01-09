@@ -11,7 +11,7 @@ class RoleModel {
      * @param string $name
      * @param array $permissions
      */
-    public function __construct(int $id, string $name, array $permissions)
+    public function __construct(int $id = 0, string $name = "", array $permissions = [])
     {
         $this->id = $id;
         $this->name = $name;

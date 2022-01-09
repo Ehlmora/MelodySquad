@@ -1,6 +1,6 @@
 <div class="d-flex flex-row">
     <div class="d-flex flex-column flex-shrink-0 bg-white border py-4 px-5 align-items-center text-center">
-        <img src="<?= $user->getProfilePictureURL(); ?>" alt="Profile picture" width="150" height="150" class="img-thumbnail rounded-circle mb-2">
+        <img src="<?= $user->getPictureURL(); ?>" alt="Profile picture" width="150" height="150" class="img-thumbnail rounded-circle mb-2">
         <div class="mb-5">
             <p class="fw-bold"><?= $user->getUsername(); ?></p>
             <p class="text-muted"><?= $user->getRole()->getName(); ?></p>
