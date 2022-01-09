@@ -160,6 +160,12 @@ hr {
     object-fit: cover;
 }
 
+.card-img-side {
+    width: 100%;
+    height: 20vw;
+    object-fit: cover;
+}
+
 .nav-link:hover, .nav-link:focus {
     color: var(--ms-purple);
 }

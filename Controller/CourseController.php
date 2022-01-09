@@ -27,19 +27,15 @@ class CourseController extends Controller
 
     public static function show($slug) {
 
-        $course = new CourseModel(
-            0,
-            "",
-            "",
-            "",
-            "",
-            false,
-            [],
-            $slug
-        );
+        $course = new CourseModel();
+        $course->setSlug($slug);
 
         $dao = new CourseDAO($course);
         $dao->getBySlug();
+
+        $dao->getDifficulty();
+        $dao->getCategory();
+        $dao->getParts();
 
         include_once "../View/Course/show.php";
 
@@ -74,6 +70,7 @@ class CourseController extends Controller
         $courseDao = new CourseDAO();
         $courses = $courseDao->getAllByCategoryAndDifficulty($category, $difficulty);
 
-        Response::send(true, $courses);
+        $success = !empty($courses);
+        Response::send($success, $courses);
     }
 }

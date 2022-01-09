@@ -4,15 +4,18 @@ class CategoryModel {
 
 	private int $id;
 	private string $title;
+    private string $color;
 
     /**
      * @param int $id
-     * @param string $name
+     * @param string $title
+     * @param string $color
      */
-    public function __construct(int $id, string $name)
+    public function __construct(int $id = 0, string $title = "", string $color = "")
     {
         $this->id = $id;
-        $this->name = $name;
+        $this->title = $title;
+        $this->color = $color;
     }
 
     /**
@@ -25,26 +28,48 @@ class CategoryModel {
 
     /**
      * @param int $id
+     * @return CategoryModel
      */
-    public function setId(int $id): void
+    public function setId(int $id): CategoryModel
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
-     * @param string $name
+     * @param string $title
+     * @return CategoryModel
      */
-    public function setName(string $name): void
+    public function setTitle(string $title): CategoryModel
     {
-        $this->title = $name;
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string $color
+     * @return CategoryModel
+     */
+    public function setColor(string $color): CategoryModel
+    {
+        $this->color = $color;
+        return $this;
     }
 
 }

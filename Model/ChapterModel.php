@@ -11,7 +11,7 @@ class ChapterModel {
      * @param string $title
      * @param string $content
      */
-    public function __construct(int $id, string $title, string $content)
+    public function __construct(int $id = 0, string $title = "", string $content = "")
     {
         $this->id = $id;
         $this->title = $title;
