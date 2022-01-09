@@ -1,7 +1,5 @@
 <?php
 
-use JetBrains\PhpStorm\Pure;
-
 class AccountModel {
 
     private int $id;
@@ -10,9 +8,10 @@ class AccountModel {
     private string $username;
     private string $birthDate;
     private string $mail;
+    private string $password;
     private string $createdAt;
     private string $lastConnection;
-    private string $pictureURL;
+    private string $profilePictureURL;
     private RoleModel $role;
 
     /**
@@ -22,12 +21,13 @@ class AccountModel {
      * @param string $username
      * @param string $birthDate
      * @param string $mail
+     * @param string $password
      * @param string $createdAt
      * @param string $lastConnection
-     * @param string $pictureURL
+     * @param string $profilePictureURL
      * @param RoleModel $role
      */
-    public function __construct(int $id = 0, string $firstname = "", string $lastname = "", string $username = "", string $birthDate = "", string $mail = "", string $createdAt = "", string $lastConnection = "", string $pictureURL = "", RoleModel $role = null)
+    public function __construct(int $id, string $firstname, string $lastname, string $username, string $birthDate, string $mail, string $password, string $createdAt, string $lastConnection, string $profilePictureURL, RoleModel $role)
     {
         $this->id = $id;
         $this->firstname = $firstname;
@@ -35,10 +35,11 @@ class AccountModel {
         $this->username = $username;
         $this->birthDate = $birthDate;
         $this->mail = $mail;
+        $this->password = $password;
         $this->createdAt = $createdAt;
         $this->lastConnection = $lastConnection;
-        $this->pictureURL = $pictureURL;
-        $this->role = $role ?? new RoleModel();
+        $this->profilePictureURL = $profilePictureURL;
+        $this->role = $role;
     }
 
     /**
@@ -152,6 +153,24 @@ class AccountModel {
     /**
      * @return string
      */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @return AccountModel
+     */
+    public function setPassword(string $password): AccountModel
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getCreatedAt(): string
     {
         return $this->createdAt;
@@ -188,18 +207,18 @@ class AccountModel {
     /**
      * @return string
      */
-    public function getPictureURL(): string
+    public function getProfilePictureURL(): string
     {
-        return $this->pictureURL;
+        return $this->profilePictureURL;
     }
 
     /**
-     * @param string $pictureURL
+     * @param string $profilePictureURL
      * @return AccountModel
      */
-    public function setPictureURL(string $pictureURL): AccountModel
+    public function setProfilePictureURL(string $profilePictureURL): AccountModel
     {
-        $this->pictureURL = $pictureURL;
+        $this->profilePictureURL = $profilePictureURL;
         return $this;
     }
 

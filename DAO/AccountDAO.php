@@ -12,7 +12,19 @@ class AccountDAO extends DAO
     {
         parent::__construct();
 
-        if($account == null) $account = new AccountModel();
+        if($account == null) $account = new AccountModel(
+            0,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            new RoleModel(0, "", [])
+        );
         $this->account = $account;
     }
 
@@ -26,7 +38,7 @@ class AccountDAO extends DAO
         $this->account = $account;
     }
 
-    public function create($password) : bool {
+    public function create() : bool {
 
         try {
 
@@ -37,8 +49,8 @@ class AccountDAO extends DAO
             $result = $sth->execute([
                 ":username" => $this->account->getUsername(),
                 ":mail"     => $this->account->getMail(),
-                ":password" => $password,
-                ":pictureURL" => $this->account->getPictureURL(),
+                ":password" => $this->account->getPassword(),
+                ":pictureURL" => $this->account->getProfilePictureURL(),
                 ":role_id" => $this->account->getRole()->getId()
             ]);
 
@@ -53,7 +65,7 @@ class AccountDAO extends DAO
         }
     }
 
-    public function verifyPassword($password) {
+    public function verifyPassword() {
 
         try {
 
@@ -71,7 +83,7 @@ class AccountDAO extends DAO
 
             if($account === false) return false;
 
-            return password_verify($password, $account['password']);
+            return password_verify($this->account->getPassword(), $account['password']);
 
 
         } catch (PDOException $e) {
@@ -134,7 +146,7 @@ class AccountDAO extends DAO
             $this->account->setMail($account['mail']);
             $this->account->setCreatedAt($account['createdAt']);
             $this->account->setLastConnection($account['lastConnection']);
-            $this->account->setPictureURL($account['pictureURL'] ?? "");
+            $this->account->setProfilePictureURL($account['pictureURL'] ?? "");
             $this->account->setRole(new RoleModel($account['role_id'], $account['role_name'], []));
 
             return true;
@@ -177,7 +189,7 @@ class AccountDAO extends DAO
             $this->account->setMail($account['mail']);
             $this->account->setCreatedAt($account['createdAt']);
             $this->account->setLastConnection($account['lastConnection']);
-            $this->account->setPictureURL($account['pictureURL'] ?? "");
+            $this->account->setProfilePictureURL($account['pictureURL'] ?? "");
             $this->account->setRole(new RoleModel($account['role_id'], $account['role_name'], []));
 
             return true;
@@ -220,7 +232,7 @@ class AccountDAO extends DAO
             $this->account->setMail($account['mail']);
             $this->account->setCreatedAt($account['createdAt']);
             $this->account->setLastConnection($account['lastConnection']);
-            $this->account->setPictureURL($account['pictureURL'] ?? "");
+            $this->account->setProfilePictureURL($account['pictureURL'] ?? "");
             $this->account->setRole(new RoleModel($account['role_id'], $account['role_name'], []));
 
             return true;

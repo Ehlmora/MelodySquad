@@ -52,32 +52,25 @@
 
                 console.log(response.data);
                 coursesList.innerText = "";
-
-                if(response.success) {
-                    response.data.forEach(course => {
-                        let template = '' +
-                            '<a href="/courses/' + course.slug + '" class="card text-decoration-none link-dark mb-3">' +
-                                '<div class="row g-0">' +
-                                    '<div class="col-md-4">' +
-                                        '<img src="' + course.pictureURL + '" class="img-fluid ms-rounded card-img-side ">' +
-                                    '</div>' +
-                                    '<div class="col-md-8">' +
-                                        '<div class="card-body h-auto">' +
-                                            '<h5 card="card-title">' + course.title + '</h5>' +
-                                            '<p class="card-category">' + course.difficulty + '</p>' +
-                                            '<p class="card-category" style="color: #' + course.color + '">' + course.category + '</p>' +
-                                            '<p class="text-nowrap text-truncate h-100">' + course.description + '</p>' +
-                                        '</div>' +
-                                    '</div>' +
+                response.data.forEach(course => {
+                    let template = '' +
+                        '<a href="/courses/' + course.slug + '" class="card text-decoration-none link-dark mb-3">' +
+                            '<div class="row g-0">' +
+                                '<div class="col-md-4">' +
+                                '<img src="' + course.pictureURL + '" class="img-fluid ms-rounded">' +
+                            '</div>' +
+                            '<div class="col-md-8">' +
+                                '<div class="card-body h-100">' +
+                                    '<h5 card="card-title">' + course.title + '</h5>' +
+                                    '<p class="card-category" style="color: #' + course.color + '">' + course.category + '</p>' +
+                                    '<p class="text-nowrap text-truncate h-100">' + course.description + '</p>' +
                                 '</div>' +
-                            '</a>';
+                            '</div>' +
+                        '</div>' +
+                    '</a>';
 
-                        coursesList.innerHTML += template;
-                    });
-                } else {
-                    coursesList.innerHTML = '<h2>Il n\'y a pas de cours à afficher pour le moment</h2>';
-                }
-
+                    coursesList.innerHTML += template;
+                });
 
 
 

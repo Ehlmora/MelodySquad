@@ -56,10 +56,19 @@ class AccountController extends Controller
         // Permission check
         PermissionValidator::onlyConnected();
 
-        $user = new AccountModel();
-
-        $user->setId($_SESSION['user_id']);
-        $user->setRole(new RoleModel($_SESSION['role_id'], ""));
+        $user = new AccountModel(
+            $_SESSION['user_id'],
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            new RoleModel($_SESSION['role_id'], "", [])
+        );
 
         $dao = new AccountDAO($user);
         $dao->getAccountById();
@@ -94,11 +103,19 @@ class AccountController extends Controller
         }
 
         // Model
-        $user = new AccountModel();
-        $user->setUsername($username);
-        $user->setMail($mail);
-        $user->setPictureURL("https://cdn-icons-png.flaticon.com/512/4825/4825027.png");
-        $user->setRole(new RoleModel(3));
+        $user = new AccountModel(
+            0,
+            "",
+            "",
+            $username,
+            "",
+            $mail,
+            $password,
+            "",
+            "",
+            "https://cdn-icons-png.flaticon.com/512/4825/4825027.png",
+            new RoleModel(3, "Membre", [])
+        );
 
         // DAO Processing
         $dao = new AccountDAO($user);
@@ -115,12 +132,12 @@ class AccountController extends Controller
             ]);
         }
         // If not exist : create the acccount and get informations
-        $dao->create($password);
+        $dao->create();
         $dao->getAccountByMail();
 
         $_SESSION['user_id'] = $user->getId();
         $_SESSION['role_id'] = $user->getRole()->getId();
-        $_SESSION['pictureURL'] = $user->getPictureURL();
+        $_SESSION['pictureURL'] = $user->getProfilePictureURL();
 
         Response::send(true, "");
     }
@@ -132,11 +149,22 @@ class AccountController extends Controller
             Response::send(false, "Un ou plusieurs champ est vide");
         }
 
-        $user = new AccountModel();
-        $user->setMail($mail);
+        $user = new AccountModel(
+            0,
+            "",
+            "",
+            "",
+            "",
+            $mail,
+            $password,
+            "",
+            "",
+            "",
+            new RoleModel(3, "Membre", [])
+        );
 
         $dao = new AccountDAO($user);
-        if(!$dao->verifyPassword($password)) {
+        if(!$dao->verifyPassword()) {
             Response::send(false, "Combinaison adresse mail/mot de passe incorrect !");
         }
 
@@ -146,7 +174,7 @@ class AccountController extends Controller
         // Log the user on his account after signin
         $_SESSION['user_id'] = $user->getId();
         $_SESSION['role_id'] = $user->getRole()->getId();
-        $_SESSION['pictureURL'] = $user->getPictureURL();
+        $_SESSION['pictureURL'] = $user->getProfilePictureURL();
 
         Response::send(true, "La connexion va être établie");
     }
